@@ -1,0 +1,100 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  price       Float
+  image       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  modifierGroups ModifierGroup[]
+  orderItems    OrderItem[]
+}
+
+model ModifierGroup {
+  id            String   @id @default(uuid())
+  name          String
+  productItemId String
+  isRequired    Boolean  @default(false)
+  maxSelections Int      @default(1)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  product       Product @relation(fields: [productItemId], references: [id])
+  modifiers     Modifier[]
+}
+
+model Modifier {
+  id              String   @id @default(uuid())
+  name            String
+  priceAdjustment Float    @default(0)
+  modifierGroupId String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  modifierGroup   ModifierGroup @relation(fields: [modifierGroupId], references: [id])
+  orderItemModifiers OrderItemModifier[]
+}
+
+model Order {
+  id          String   @id @default(uuid())
+  totalPrice  Float
+  status      String   @default("pending")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  orderItems  OrderItem[]
+}
+
+model OrderItem {
+  id            String   @id @default(uuid())
+  orderId       String
+  productItemId String
+  price         Float
+  quantity      Int      @default(1)
+
+  order         Order   @relation(fields: [orderId], references: [id])
+  product       Product @relation(fields: [productItemId], references: [id])
+  orderItemModifiers OrderItemModifier[]
+}
+
+model OrderItemModifier {
+  id         String   @id @default(uuid())
+  orderItemId String
+  modifierId  String
+  price       Float
+
+  orderItem   OrderItem  @relation(fields: [orderItemId], references: [id])
+  modifier    Modifier   @relation(fields: [modifierId], references: [id])
+}
+
+model User {
+  id       String   @id @default(uuid())
+  email    String   @unique
+  password String
+  role     Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  ADMIN
+  USER
+  CASHIER
+  KITCHEN
+  WAITER
+}
