@@ -1,7 +1,7 @@
 
 import { Routes } from '../../core/routes/interfaces/RouteInterface';
 import { APP_NAME } from '../../config';
-import { scrapeWebsite } from '../utils/helper';
+// import { scrapeWebsite } from '../utils/helper';
 import { NextFunction, Request, Response, Router } from 'express';
 
 class IndexRoute implements Routes {

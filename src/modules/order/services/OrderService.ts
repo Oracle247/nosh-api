@@ -75,30 +75,31 @@ export class OrderService {
   }
 
   async updateOrder(id: string, data: Partial<ICreateOrder>) {
-    return prisma.order.update({
-      where: { id },
-      data: {
-        totalPrice: data.totalPrice,
-        status: data.status,
-        orderItems: {
-          upsert: data.orderItems?.map((item) => ({
-            where: { id: item.id || 'INVALID_ID' }, // Ensure valid ID or use a placeholder
-            update: formatOrderItemUpdate(item),
-            create: formatOrderItemCreate(item, id),
-          })) || [],
-        },
-      },
-      include: {
-        orderItems: {
-          include: {
-            product: true,
-            orderItemModifiers: {
-              include: { modifier: true },
-            },
-          },
-        },
-      },
-    });
+    // return prisma.order.update({
+    //   where: { id },
+    //   data: {
+    //     totalPrice: data.totalPrice,
+    //     status: data.status,
+    //     orderItems: {
+    //       upsert: data.orderItems?.map((item) => ({
+    //         where: { id: item.id || 'INVALID_ID' }, // Ensure valid ID or use a placeholder
+    //         update: formatOrderItemUpdate(item),
+    //         create: formatOrderItemCreate(item, id),
+    //       })) || [],
+    //     },
+    //   },
+    //   include: {
+    //     orderItems: {
+    //       include: {
+    //         product: true,
+    //         orderItemModifiers: {
+    //           include: { modifier: true },
+    //         },
+    //       },
+    //     },
+    //   },
+    // });
+    return {};
   }
 
   async deleteOrder(id: string) {

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { ProductService } from "../services";
 import { StatusCodes } from "http-status-codes";
 import { successResponse } from "../../../core/utils/responses.utils";
+import { ProductService } from "../../products/services";
 
 export class ProductController {
   private productService = new ProductService();
