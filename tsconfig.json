@@ -19,7 +19,8 @@
     "pretty": true,
     "sourceMap": true,
     "declaration": true,
-    "outDir": "dist",
+    "outDir": "./dist",
+    "rootDir": "./src",
     "allowJs": true,
     "noEmit": false,
     "esModuleInterop": true,
@@ -73,12 +74,13 @@
   "ts-node": {
     "files": true
   },
-  "files": ["src/types/express/index.d.ts"],
+  "files": [
+    "src/types/express/index.d.ts"
+  ],
   "exclude": [
     "node_modules",
     "src/http",
     "src/logs",
     "src/tests"
   ]
-
 }
